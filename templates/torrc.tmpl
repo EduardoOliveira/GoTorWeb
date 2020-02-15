@@ -1,0 +1,11 @@
+{{if ne .LocalPort 0}}
+HiddenServiceDir /config/local
+HiddenServiceVersion 3
+HiddenServicePort {{.LocalPort}} localhost:{{.LocalPort}}
+{{end}}
+
+{{range .Containers}}
+HiddenServiceDir /config/{{.Name}}
+HiddenServiceVersion 3
+HiddenServicePort {{.PortForward}} {{.IPAddr}}:{{.Port}}
+{{end}}
