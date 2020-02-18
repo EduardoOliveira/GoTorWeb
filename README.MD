@@ -5,7 +5,11 @@ This project as has the objective of providing an easy and automatic way of epos
 ## Running GoTorWeb
 
 ```bash
-docker run --rm --name gtw  -v /var/run/docker.sock:/var/run/docker.sock  -e "GTW-USERNAME=<auth user>" -e "GTW-PASSWORD=<auth password>" -v <config location>:/config knoker/go_tor_web
+docker run --rm --name gtw  \
+    -v /var/run/docker.sock:/var/run/docker.sock  \
+    -e "GTW-USERNAME=<auth user>" \
+    -e "GTW-PASSWORD=<auth password>" \
+    -v <config location>:/config knoker/go_tor_web
 ```
 
 ### Runtime Parameters
@@ -27,7 +31,11 @@ Local: something.onion 80
 ## Other containers
 
 ``` bash
-docker run --rm -it -l "GTW=1" -l "GWT-PORT=8080" -l "GWT-PORT-FW=80"  hashicorp/http-echo -listen=:8080 -text="hello world"
+docker run --rm -it \
+    -l "GTW=1" \
+    -l "GWT-PORT=8080" \
+    -l "GWT-PORT-FW=80"  \
+    hashicorp/http-echo -listen=:8080 -text="hello world"
 ```
 
 ### Other containers parameters
