@@ -5,7 +5,7 @@ This project as has the objective of providing an easy and automatic way of epos
 ## Running GoTorWeb
 
 ```bash
-docker run --rm --name gtw  -v /var/run/docker.sock:/var/run/docker.sock  -e "GTW-USERNAME=<auth user>" -e "GTW-PASSWORD=<auth password>" -v <config location>:/config gtw
+docker run --rm --name gtw  -v /var/run/docker.sock:/var/run/docker.sock  -e "GTW-USERNAME=<auth user>" -e "GTW-PASSWORD=<auth password>" -v <config location>:/config knoker/go_tor_web
 ```
 
 ### Runtime Parameters
@@ -45,3 +45,7 @@ docker run --rm -it -l "GTW=1" -l "GWT-PORT=8080" -l "GWT-PORT-FW=80"  hashicorp
 * Improve the name discovery routine to run only when a new container is launched and until it's name is discovered
 
 * Allow disabling the web ui
+
+***
+
+Feedback and pull requests are apreciated
