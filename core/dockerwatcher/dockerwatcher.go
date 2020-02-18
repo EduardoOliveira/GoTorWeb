@@ -42,6 +42,7 @@ func (w *Watcher) GetRunning() (containers []*lib.Container, err error) {
 		log.Println(fmt.Sprintf("%+v    %s", dc, strings.TrimPrefix(dc.Names[0], "/")))
 		c := &lib.Container{
 			ID:          dc.ID,
+			Image:       dc.Image,
 			Name:        strings.TrimPrefix(dc.Names[0], "/"),
 			Port:        dc.Labels["GWT-PORT"],
 			PortForward: dc.Labels["GWT-PORT-FW"],
@@ -88,6 +89,7 @@ func (w *Watcher) Start() {
 						log.Println(e.Actor.Attributes["name"], " fail to inspect container", err)
 						continue
 					}
+					c.Image = full.Image
 					c.IPAddr = full.NetworkSettings.DefaultNetworkSettings.IPAddress
 				}
 
