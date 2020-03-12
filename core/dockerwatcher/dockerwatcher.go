@@ -64,7 +64,14 @@ func (w *Watcher) GetRunning() (containers []*lib.Container, err error) {
 			log.Println(c.Name, " fail to inspect container", err)
 			continue
 		}
-		c.IPAddr = full.NetworkSettings.Networks[w.network].IPAddress
+
+		if nt, ok := full.NetworkSettings.Networks[w.network]; ok {
+			c.IPAddr = nt.IPAddress
+		}
+		if err != nil {
+			log.Println(c.Name, " not in network ", w.network)
+			continue
+		}
 		containers = append(containers, c)
 	}
 	return
@@ -102,7 +109,13 @@ func (w *Watcher) Start() {
 						continue
 					}
 					c.Image = full.Image
-					c.IPAddr = full.NetworkSettings.Networks[w.network].IPAddress
+					if nt, ok := full.NetworkSettings.Networks[w.network]; ok {
+						c.IPAddr = nt.IPAddress
+					}
+					if err != nil {
+						log.Println(c.Name, " not in network ", w.network)
+						continue
+					}
 				}
 
 				for _, f := range w.watchers[e.Action] {
