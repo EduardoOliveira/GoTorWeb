@@ -21,5 +21,6 @@ func (tm *TorManager) genRC() error {
 	if err != nil {
 		return err
 	}
+	_ = t.Execute(os.Stdout, tm)
 	return nil
 }
