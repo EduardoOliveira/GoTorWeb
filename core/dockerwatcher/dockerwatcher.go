@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/EduardoOliveira/GoTorWeb/core/lib"
@@ -14,6 +15,7 @@ import (
 
 type Watcher struct {
 	client   *client.Client
+	network  string
 	filters  filters.Args
 	watchers map[string][]func(*lib.Container)
 }
@@ -22,6 +24,10 @@ func New(filters filters.Args) (w *Watcher, err error) {
 
 	w = new(Watcher)
 	w.watchers = make(map[string][]func(*lib.Container), 0)
+	w.network = os.Getenv("GTW-NETWORK")
+	if w.network == "" {
+		w.network = "bridge"
+	}
 
 	w.client, err = client.NewEnvClient()
 	if err != nil {
@@ -58,7 +64,7 @@ func (w *Watcher) GetRunning() (containers []*lib.Container, err error) {
 			log.Println(c.Name, " fail to inspect container", err)
 			continue
 		}
-		c.IPAddr = full.NetworkSettings.DefaultNetworkSettings.IPAddress
+		c.IPAddr = full.NetworkSettings.Networks[w.network].IPAddress
 		containers = append(containers, c)
 	}
 	return
@@ -96,7 +102,7 @@ func (w *Watcher) Start() {
 						continue
 					}
 					c.Image = full.Image
-					c.IPAddr = full.NetworkSettings.DefaultNetworkSettings.IPAddress
+					c.IPAddr = full.NetworkSettings.Networks[w.network].IPAddress
 				}
 
 				for _, f := range w.watchers[e.Action] {
