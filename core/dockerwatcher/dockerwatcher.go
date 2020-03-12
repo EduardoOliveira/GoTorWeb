@@ -47,6 +47,12 @@ func (w *Watcher) GetRunning() (containers []*lib.Container, err error) {
 			Port:        dc.Labels["GWT-PORT"],
 			PortForward: dc.Labels["GWT-PORT-FW"],
 		}
+
+		if c.Port == "" || c.PortForward == "" {
+			log.Printf(c.Name, " no GWT-PORT or GWT-PORT-FW discarding event")
+			continue
+		}
+
 		full, err := w.client.ContainerInspect(context.Background(), dc.ID)
 		if err != nil {
 			log.Println(c.Name, " fail to inspect container", err)
